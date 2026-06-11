@@ -1,0 +1,19 @@
+# Penpot: solo material de referencia, NO se versiona (656 MB + su propio .git)
+/penpot/
+
+# Clojure / tools.deps
+.cpcache/
+.nrepl-port
+**/target/
+*.class
+
+# shadow-cljs / Node (frontend, futuro)
+node_modules/
+.shadow-cljs/
+frontend/resources/public/js/
+
+# Logs y temporales
+*.log
+
+# Sistema operativo / editores
+.DS_Store

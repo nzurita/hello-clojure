@@ -1,0 +1,26 @@
+# Orquestación del entorno de desarrollo: un único contenedor "todo en uno".
+# Equivale a tu docker-compose.yml de LAMP, pero con un solo servicio.
+services:
+  wdev-clojure-jdk-21:
+    build:
+      context: ./docker
+      dockerfile: Dockerfile
+    image: wdev-clojure-jdk-21
+    container_name: wdev-clojure-jdk-21
+    hostname: wdev-clojure-jdk-21
+    ports:
+      - "8080:8080"   # nginx (la web)
+      - "9090:9090"   # backend HTTP (Clojure)
+      - "9630:9630"   # shadow-cljs (hot-reload del frontend)
+      - "5432:5432"   # PostgreSQL
+    volumes:
+      # Código del proyecto montado en vivo (como tu /var/www/html).
+      - ./:/workspace
+      # Datos persistentes de PostgreSQL.
+      - wdev-clojure-pg:/var/lib/postgresql
+    working_dir: /workspace
+    stdin_open: true
+    tty: true
+
+volumes:
+  wdev-clojure-pg:
