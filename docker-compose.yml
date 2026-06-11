@@ -9,7 +9,7 @@ services:
     container_name: wdev-clojure-jdk-21
     hostname: wdev-clojure-jdk-21
     ports:
-      - "8080:8080"   # nginx (la web)
+      - "80:8080"     # nginx (la web) -> http://localhost
       - "9090:9090"   # backend HTTP (Clojure)
       - "9630:9630"   # shadow-cljs (hot-reload del frontend)
       - "5432:5432"   # PostgreSQL
@@ -18,9 +18,14 @@ services:
       - ./:/workspace
       # Datos persistentes de PostgreSQL.
       - wdev-clojure-pg:/var/lib/postgresql
+      # Caché de dependencias (sobrevive a recrear el contenedor).
+      - wdev-clojure-m2:/root/.m2            # libs Maven/Clojars (como el caché de Composer)
+      - wdev-clojure-gitlibs:/root/.gitlibs  # dependencias vía git (:git/url)
     working_dir: /workspace
     stdin_open: true
     tty: true
 
 volumes:
   wdev-clojure-pg:
+  wdev-clojure-m2:
+  wdev-clojure-gitlibs:
