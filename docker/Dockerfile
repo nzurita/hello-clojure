@@ -66,6 +66,10 @@ RUN echo "listen_addresses = '*'" >> /etc/postgresql/${PG_MAJOR}/main/postgresql
 # (Mismo truco que usas con /var/lib/mysql_default en tu LAMP.)
 RUN cp -aR /var/lib/postgresql /var/lib/postgresql_default
 
+# --- tmux (multiplexor de terminales para las sesiones de desarrollo) --------
+RUN apt-get update && apt-get install -y --no-install-recommends tmux \
+    && rm -rf /var/lib/apt/lists/*
+
 # --- Script de arranque ------------------------------------------------------
 COPY cmd.sh /usr/local/bin/cmd.sh
 RUN chmod +x /usr/local/bin/cmd.sh

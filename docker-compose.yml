@@ -11,6 +11,7 @@ services:
     ports:
       - "80:8080"     # nginx (la web) -> http://localhost
       - "9090:9090"   # backend HTTP (Clojure)
+      - "6064:6064"   # nREPL del backend (conectas tu editor aquí)
       - "9630:9630"   # shadow-cljs (hot-reload del frontend)
       - "5432:5432"   # PostgreSQL
     volumes:

@@ -25,13 +25,23 @@ su - postgres -c "psql -tc \"SELECT 1 FROM pg_database WHERE datname='hello'\"" 
 echo "Arrancando nginx..."
 service nginx start
 
+# Sesión tmux "dev" con una ventana por proceso (estilo Penpot).
+# Se crea "detached" (-d): vive en un servidor tmux propio, independiente de
+# este script. Luego te enganchas con `tmux attach -t dev`.
+echo "Lanzando sesión tmux 'dev' (backend + frontend)..."
+tmux new-session -d -s dev -n backend -c /workspace/backend
+tmux send-keys -t dev:backend 'clojure -M:dev' C-m
+tmux new-window -t dev -n frontend -c /workspace/frontend
+tmux send-keys -t dev:frontend 'pnpm run watch' C-m
+
 echo "----------------------------------------------------------------"
 echo " Contenedor de desarrollo listo."
 echo "   JDK     : $(java -version 2>&1 | head -n1)"
 echo "   Clojure : $(clojure --version 2>/dev/null || echo 'n/a')"
 echo "   Node    : $(node -v)   pnpm: $(pnpm -v)"
 echo "   Postgres: db 'hello' / rol 'dev' / pass 'dev' (puerto 5432)"
-echo "   Web     : http://localhost:8080  (nginx)"
+echo "   Web     : http://localhost  (nginx)        Backend: :9090  nREPL: :6064"
+echo "   tmux    : tmux attach -t dev  (cambiar ventana: Ctrl+b n/p | salir: Ctrl+b d)"
 echo "----------------------------------------------------------------"
 
 # Mantiene el contenedor vivo mostrando los logs de nginx.
