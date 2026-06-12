@@ -1,15 +1,17 @@
 ## Stack tecnológico de Penpot (resumen)
 
-| Módulo          | Lenguaje(s)            | Tecnología / Framework clave                                   |
-| --------------- | ---------------------- | -------------------------------------------------------------- |
-| `frontend/`     | ClojureScript + SCSS   | React 19 vía **Rumext**, **Potok** (estado), **RxJS/beicon**, **okulary**, shadow-cljs |
+| Módulo          | Lenguaje(s)            | Tecnología / Framework clave                                                            |
+| --------------- | ---------------------- | ----------------------------------------------------------------------------------------|
+| `frontend/`     | ClojureScript + SCSS   | React 19 vía **Rumext**, **Potok** (estado), **RxJS/beicon**, **okulary**, shadow-cljs  |
 | `backend/`      | Clojure (JVM)          | **Integrant**, HTTP/RPC con **reitit** + **yetti** (Jetty), **next.jdbc**, **HikariCP** |
-| `common/`       | CLJC (JVM + JS)        | Tipos/geometría/schemas compartidos, **Malli**, Transit         |
-| `render-wasm/`  | **Rust** → WebAssembly | **Skia** (`skia-safe`), Emscripten, OpenGL                      |
-| `exporter/`     | ClojureScript + Node   | **Playwright** headless (export SVG/PDF/PNG)                     |
-| `mcp/`          | **TypeScript** (Node)  | MCP SDK (`@modelcontextprotocol/sdk`)                           |
-| `plugins/`      | **TypeScript**         | Runtime de plugins (SES), tipos de la Plugin API                |
-| `library/`      | ClojureScript          | `@penpot/library`: builder de archivos `.penpot`                |
+| `common/`       | CLJC (JVM + JS)        | Tipos/geometría/schemas compartidos, **Malli**, Transit                                 |
+| `render-wasm/`  | **Rust** → WebAssembly | **Skia** (`skia-safe`), Emscripten, OpenGL                                              |
+| `exporter/`     | ClojureScript + Node   | **Playwright** headless (export SVG/PDF/PNG)                                            |
+| `mcp/`          | **TypeScript** (Node)  | MCP SDK (`@modelcontextprotocol/sdk`)                                                   |
+| `plugins/`      | **TypeScript**         | Runtime de plugins (SES), tipos de la Plugin API                                        |
+| `library/`      | ClojureScript          | `@penpot/library`: builder de archivos `.penpot`                                        |
+
+Frontend: ClojureScript  →  Rumext (mf/defc)  →  React 19  →  DOM del navegador
 
 Penpot trae además un sistema de memorias en `penpot/.serena/memories/`
 (con `penpot/AGENTS.md` como índice) que documenta cada módulo en detalle.

@@ -1,0 +1,13 @@
+;; Configuración de shadow-cljs (el "bundler" de ClojureScript, ~ webpack).
+{:source-paths ["src"]
+
+ ;; Dependencias ClojureScript del frontend. De momento ninguna: para el
+ ;; "Hola Mundo" usamos interop directo con el DOM (js/document), sin React.
+ :dependencies []
+
+ :builds
+ {:app
+  {:target    :browser
+   :output-dir "resources/public/js"   ; dónde deja el JS compilado
+   :asset-path "/js"                    ; ruta pública desde la que se cargan
+   :modules   {:main {:init-fn hello.app/init}}}}}  ; main.js -> llama a (init)

@@ -10,6 +10,7 @@
 # shadow-cljs / Node (frontend, futuro)
 node_modules/
 .shadow-cljs/
+.pnpm-store/
 frontend/resources/public/js/
 
 # Logs y temporales
@@ -17,3 +18,6 @@ frontend/resources/public/js/
 
 # Sistema operativo / editores
 .DS_Store
+
+# Marcador local de herramienta (nombre del contenedor)
+.docker-container.dev
