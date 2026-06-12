@@ -1,5 +1,8 @@
 {:paths ["src"]
- :deps {ring/ring-jetty-adapter {:mvn/version "1.15.4"}}
+ :deps {ring/ring-jetty-adapter {:mvn/version "1.15.4"}
+        ;; Dependencia LOCAL al módulo common/ (no se descarga de internet).
+        ;; ~ repositorio "path" de Composer. Malli llega de forma transitiva.
+        hello/common {:local/root "../common"}}
 
  ;; Alias de desarrollo (~ "scripts" de desarrollo en composer.json).
  ;; Añade nREPL (servidor de REPL en red) y cider-nrepl (middleware para que

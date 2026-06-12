@@ -21,3 +21,4 @@ frontend/resources/public/js/
 
 # Marcador local de herramienta (nombre del contenedor)
 .docker-container.dev
+CLAUDE.md
