@@ -6,7 +6,7 @@
   [_request]
   {:status 200
    :headers {"Content-Type" "text/plain; charset=utf-8"}
-   :body "¡Hola, mundo!"})
+   :body "¡Hola, mundo loco!"})
 
 (defn -main
   [& _args]
