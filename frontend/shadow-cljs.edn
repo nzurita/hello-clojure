@@ -1,9 +1,7 @@
 ;; Configuración de shadow-cljs (el "bundler" de ClojureScript, ~ webpack).
-{:source-paths ["src"]
-
- ;; Dependencias ClojureScript del frontend. De momento ninguna: para el
- ;; "Hola Mundo" usamos interop directo con el DOM (js/document), sin React.
- :dependencies []
+;; Ahora las dependencias se gestionan desde deps.edn (como Penpot):
+;; :deps {:aliases [:dev]} le dice a shadow que use deps.edn con el alias :dev.
+{:deps {:aliases [:dev]}
 
  :builds
  {:app

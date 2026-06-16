@@ -1,0 +1,14 @@
+;; Dependencias del frontend gestionadas por deps.edn (como Penpot).
+;; shadow-cljs leerá de aquí el classpath (ver :deps en shadow-cljs.edn).
+{:paths ["src"]
+ :deps
+ ;; El MISMO módulo common/ que usa el backend, vía :local/root.
+ ;; Malli llega de forma transitiva, así que el navegador puede validar
+ ;; con el MISMO schema que el servidor.
+ {hello/common {:local/root "../common"}}
+
+ :aliases
+ ;; shadow-cljs (parte JVM) debe estar en el classpath; su versión ha de
+ ;; coincidir con la del paquete npm (package.json: 3.4.11).
+ {:dev
+  {:extra-deps {thheller/shadow-cljs {:mvn/version "3.4.11"}}}}}
