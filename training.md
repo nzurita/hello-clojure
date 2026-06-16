@@ -5,6 +5,8 @@ Fase 4: conectar front ↔ back vía nginx (fetch /api/hello)
 Fase 5: integrar servicios en cmd.sh / arranque automático
 Fase 6: crear módulo common/ (CLJC) con schema Malli + :local/root en backend
 Fase 7: consumir common/ desde el frontend (validación compartida cliente+servidor)
+Fase 8: Mini RPC en el backend
+Fase 9: Pantalla demo con React (Rumext)
 
 # Mini-glosario de interop ClojureScript <-> JavaScript
 
@@ -17,3 +19,37 @@ Fase 7: consumir common/ desde el frontend (validación compartida cliente+servi
 | (fn [x] ...)    | x => ...        | función anónima                                 |
 | (str a b)       | a + b (strings) | concatenar/convertir a texto (como el . de PHP) |
 |-----------------|-----------------|-------------------------------------------------|
+
+# POO vs Clojure
+En Clojure los datos y el comportamiento están separados. No hay clases con estado + métodos dentro.
+
+```
+1. El DATO        -> un mapa normal:  {:nombre "..." :email "..." :edad 40}
+2. El SCHEMA      -> otro dato:        [:map [:nombre [:string ...]] ...]   (Malli)
+3. Las FUNCIONES  -> valida?, errores...  (operan sobre el dato)
+```
+
+```
+;; Clojure: el dato es "tonto" (un mapa) y las funciones viven aparte
+(def p {:nombre "Norberto" :email "n@x.com" :edad 40})
+(schema/valida? p)   ; la función recibe el dato, no "pertenece" a él
+```
+
+- No hay encapsulación, ni getters/setters, ni herencia, ni $this.
+- Los mapas son inmutables: "modificar" devuelve un mapa nuevo.
+- Cuando sí necesitas polimorfismo (como interfaces en PHP), Clojure tiene defprotocol/defrecord y defmulti/defmethod, pero son la excepción, no la norma. El 90% es mapas + funciones.
+
+# RPC Demos
+## OK
+curl -s -X POST http://clojurenz.me/api/rpc/command/saludar-persona \
+  -H 'Content-Type: application/json' \
+  -d '{"nombre":"Norberto","email":"norberto@example.com","edad":40}'
+
+## Validación fallida
+curl -s -X POST http://clojurenz.me/api/rpc/command/saludar-persona \
+  -H 'Content-Type: application/json' \
+  -d '{"nombre":"","email":"mal","edad":-3}'
+
+## Comando que no existe
+curl -s -X POST http://clojurenz.me/api/rpc/command/no-existe \
+  -H 'Content-Type: application/json' -d '{}'

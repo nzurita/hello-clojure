@@ -5,7 +5,7 @@
 (ns user
   (:require
    [ring.adapter.jetty :as jetty]
-   [hello.core :as core]))
+   [app.core :as core]))
 
 ;; Guardamos la instancia del servidor Jetty para poder pararla luego.
 ;; defonce = "define solo si no existe", para no perder el valor al recargar.
@@ -35,9 +35,9 @@
   (start))
 
 (defn reload
-  "Recarga hello.core desde disco (lo recompila). Como el servidor usa
+  "Recarga app.core desde disco (lo recompila). Como el servidor usa
    #'core/handler (la VAR), el cambio se aplica al instante SIN reiniciar.
    Es el equivalente backend al hot-reload del frontend, pero disparado por ti."
   []
-  (require 'hello.core :reload)
-  (println "hello.core recargado."))
+  (require 'app.rpc 'app.http 'app.core :reload)
+  (println "app.rpc, app.http y app.core recargados."))

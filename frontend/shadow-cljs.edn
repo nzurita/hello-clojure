@@ -8,4 +8,4 @@
   {:target    :browser
    :output-dir "resources/public/js"   ; dónde deja el JS compilado
    :asset-path "/js"                    ; ruta pública desde la que se cargan
-   :modules   {:main {:init-fn hello.app/init}}}}}  ; main.js -> llama a (init)
+   :modules   {:main {:init-fn app.app/init}}}}}  ; main.js -> llama a (init)

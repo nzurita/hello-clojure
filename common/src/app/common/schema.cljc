@@ -2,8 +2,8 @@
 ;;   - JVM  (lo usará el backend, .clj)
 ;;   - JS   (lo usará el frontend, .cljs)  <- esto lo aprovecharemos en la Fase 7
 ;;
-;; Namespace bajo hello.common.* igual que Penpot usa app.common.*
-(ns hello.common.schema
+;; Namespace bajo app.common.* igual que Penpot usa app.common.*
+(ns app.common.schema
   (:require
    [malli.core :as m]
    [malli.error :as me]))

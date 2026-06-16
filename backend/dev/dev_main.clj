@@ -1,6 +1,6 @@
 ;; Arranque de DESARROLLO (lo lanza la ventana "backend" de tmux):
 ;;   1. Levanta un servidor nREPL en 0.0.0.0:6064 -> conectas tu editor aquí.
-;;   2. Arranca el servidor web (user/start) -> /api/hello responde de inmediato.
+;;   2. Arranca el servidor web (user/start) -> /api/app responde de inmediato.
 ;;   3. Bloquea el proceso para que tmux mantenga la ventana viva.
 ;; El fichero se llama dev_main.clj porque en Clojure el guion del namespace
 ;; (dev-main) se convierte en guion bajo en la ruta del fichero.

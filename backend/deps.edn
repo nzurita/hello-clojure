@@ -2,7 +2,12 @@
  :deps {ring/ring-jetty-adapter {:mvn/version "1.15.4"}
         ;; Dependencia LOCAL al módulo common/ (no se descarga de internet).
         ;; ~ repositorio "path" de Composer. Malli llega de forma transitiva.
-        hello/common {:local/root "../common"}}
+        app/common {:local/root "../common"}
+        ;; Routing HTTP (~ Symfony Routing). Misma librería que Penpot.
+        metosin/reitit-core {:mvn/version "0.9.1"}
+        metosin/reitit-ring {:mvn/version "0.9.1"}
+        ;; JSON request/response (Penpot usa Transit; nosotros JSON por simplicidad).
+        cheshire/cheshire {:mvn/version "5.13.0"}}
 
  ;; Alias de desarrollo (~ "scripts" de desarrollo en composer.json).
  ;; Añade nREPL (servidor de REPL en red) y cider-nrepl (middleware para que

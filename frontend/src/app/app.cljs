@@ -1,8 +1,8 @@
-(ns hello.app
+(ns app.app
   (:require
    [clojure.string :as str]
    ;; ¡El MISMO namespace que usa el backend! Vive en common/ (.cljc).
-   [hello.common.schema :as schema]))
+   [app.common.schema :as schema]))
 
 ;; Las MISMAS personas de ejemplo que valida el backend.
 (def ejemplos
@@ -36,7 +36,7 @@
    para comprobar que ambos lados dan EXACTAMENTE el mismo resultado."
   []
   (render "(cargando…)")
-  (-> (js/fetch "/api/hello")
+  (-> (js/fetch "/api/app")
       (.then (fn [resp] (.text resp)))
       (.then (fn [texto] (render texto)))
       (.catch (fn [err] (render (str "Error al contactar el backend: " err))))))
