@@ -18,6 +18,18 @@ Engancharte para ver/controlar (cuando quieras mirar logs o tocar algo):
 
 Dentro, te mueves entre ventanas con Ctrl+b y luego el número (0, 1, …) o Ctrl+b n/p (siguiente/anterior). En cada ventana ves los logs de ese proceso, puedes hacer Ctrl+C para pararlo y relanzarlo, etc.
 
+**Para cargar las referencias de funciones:**
+
+`(require '[clojure.repl :refer :all])`
+
+```
+(doc +)
+(apropos "+")
+(find-doc "trim")
+(dir clojure.repl)
+(source dir)
+```
+
 > Ctrl+C → mata la JVM y te deja en el shell #.
 > escribes clojure -M:dev → vuelve el user=> limpio.
 

@@ -1,0 +1,16 @@
+body
+{
+	padding: 0;
+	margin: 0;
+}
+
+#app-status-bar
+{
+	position: absolute;
+	bottom: 0;
+	height: 32px;
+	width: 100%;
+	margin: 0;
+	box-sizing: border-box;
+	background-color: #aaa;
+}

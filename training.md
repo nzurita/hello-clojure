@@ -8,6 +8,18 @@ Fase 7: consumir common/ desde el frontend (validación compartida cliente+servi
 Fase 8: Mini RPC en el backend
 Fase 9: Pantalla demo con React (Rumext)
 
+# Librería de documentación de funciones
+
+```
+(require '[clojure.repl :refer :all])
+```
+Ejemplos:
+```
+(doc println)
+(apropos "+")
+(source identity)
+```
+
 # Mini-glosario de interop ClojureScript <-> JavaScript
 
 |-----------------|-----------------|-------------------------------------------------|
@@ -53,3 +65,20 @@ curl -s -X POST http://clojurenz.me/api/rpc/command/saludar-persona \
 ## Comando que no existe
 curl -s -X POST http://clojurenz.me/api/rpc/command/no-existe \
   -H 'Content-Type: application/json' -d '{}'
+
+## Demo
+curl -s -X GET http://clojurenz.me/api/app \
+  -H 'Content-Type: application/json'
+
+# Llamadas a Java
+
+
+|-----------------|-------------------|------------------|
+|      Task       |       Java        |     Clojure      |
+|-----------------|-------------------|------------------|
+| Instantiation   | new Widget("foo") | (Widget. "foo")  |
+| Instance method | rnd.nextInt()     | (.nextInt rnd)   |
+| Instance field  | object.field      | (.-field object) |
+| Static method   | Math.sqrt(25)     | (Math/sqrt 25)   |
+| Static field    | Math.PI           | Math/PI          |
+|-----------------|-------------------|------------------|

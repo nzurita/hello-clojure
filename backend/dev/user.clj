@@ -39,5 +39,11 @@
    #'core/handler (la VAR), el cambio se aplica al instante SIN reiniciar.
    Es el equivalente backend al hot-reload del frontend, pero disparado por ti."
   []
-  (require 'app.rpc 'app.http 'app.core :reload)
-  (println "app.rpc, app.http y app.core recargados."))
+  ;; common/ primero: app.rpc depende de app.common.schema-character.
+  (require 'app.common.schema
+           'app.common.schema-character
+           'app.rpc
+           'app.http
+           'app.core
+           :reload)
+  (println "common + app.rpc, app.http y app.core recargados."))

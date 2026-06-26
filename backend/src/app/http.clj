@@ -4,7 +4,8 @@
    [clojure.string :as str]
    [app.common.schema :as schema]
    [app.rpc :as rpc]
-   [reitit.ring :as ring]))
+   [reitit.ring :as ring]
+   [reitit.ring.middleware.parameters :as parameters]))
 
 ;; --- Utilidades JSON ---------------------------------------------------------
 
@@ -40,34 +41,42 @@
      :body (str "Validación con el schema de common/ (Malli):\n\n"
                 (str/join "\n" (map linea ejemplos)))}))
 
+;; method= :get 
+;; query-params= nil 
+;; query-string= id=0 
+;; path-params {:method-name get-character}
+;; parameters= nil
 (defn- rpc-handler
   "Entrada RPC (~ Penpot /api/rpc/command/:method-name).
-   POST con JSON en el body; el nombre del comando va en la URL."
+   :request-method GET sin body o POST con JSON en el body; el nombre del comando va en la URL."
   [request]
   (let [method-name (get-in request [:path-params :method-name])
         method-kw (keyword method-name)]
     (try
-      (let [params (or (read-json-body request) {})
-            result (rpc/handle method-kw params)]
+      (let [params (if (= (:request-method request) :get)
+      													(:query-params request)
+      													(or (read-json-body request) {}))
+           result (rpc/handle method-kw params)]
         (if (contains? (methods rpc/handle) method-kw)
           (json-response 200 result)
           (json-response 404 result)))
       (catch Exception e
-        (json-response 400 {:ok false :error (.getMessage e)})))))
+        (json-response 400 {:ok false :error (str method-name " " (.getMessage e))})))))
 
 ;; --- Router ------------------------------------------------------------------
 
 (def routes
   ["/api"
    ["/app" {:get app-handler}]
-   ["/rpc/command/:method-name" {:post rpc-handler}]])
+   ["/rpc/command/:method-name" {:get rpc-handler :post rpc-handler}]])
 
 (def router
   (ring/router routes))
 
 (def handler
   (ring/ring-handler
-   router
-   (ring/routes
-    (ring/create-resource-handler {:path "/"})
-    (ring/create-default-handler))))
+    router
+    (ring/routes
+      (ring/create-resource-handler {:path "/"})
+      (ring/create-default-handler))
+    {:middleware [parameters/parameters-middleware]}))

@@ -1,6 +1,7 @@
 (ns app.rpc
   (:require
-   [app.common.schema :as schema]))
+   [app.common.schema :as schema]
+   [app.common.schema-character :as schema-character]))
 
 ;; Patrón RPC de Penpot: un defmulti despacha por NOMBRE de comando.
 ;; Cada defmethod = un "endpoint" (~ una acción de controller / message handler).
@@ -18,3 +19,43 @@
     {:ok true
      :mensaje (str "Hola, " (:nombre params) " (" (:edad params) " años)")}
     {:ok false :errores (schema/errores params)}))
+
+(def empty-character {:name "-"
+                       :avatar "-"
+                       :intro-text "-"
+                       :cv-path "-"})
+
+(def demo-characters [{:name "Norberto"
+                       :avatar "data/img/norberto-avatar.png"
+                       :intro-text "Hola, me llamo Norberto"
+                       :cv-path "data/cv/norberto-cv.pdf"}
+                     {:name "Pedro"
+                      :avatar "data/img/pedro-avatar.png"
+                      :intro-text "Hola, me llamo Pedro"
+                      :cv-path "data/cv/pedro-cv.pdf"}])
+
+   ; (let [id (:id params)
+   ;      character (get demo-characters id)]
+   ;  (if character
+   ;    (if (schema-character/valid? character)
+   ;      {:ok true :character character}
+   ;      {:ok false :error "invalid character data"})
+   ;    {:ok false :error "character not found"})))
+  ; (get demo-characters 0))
+(defmethod handle :get-character-0
+  [_ params]
+  {:ok true
+   :character (get demo-characters 0)})
+
+(defmethod handle :get-character
+  [_ params]
+  (let [id (parse-long (get params "id"))]
+      (if (and (>= id 0) (< id (count demo-characters)))
+          {:ok true
+           :character (get demo-characters id)}
+          {:ok false
+           :error "El personaje solicitado no existe"
+           :character empty-character}))
+ )
+
+
