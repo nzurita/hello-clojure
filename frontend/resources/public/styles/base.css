@@ -14,3 +14,16 @@ body
 	box-sizing: border-box;
 	background-color: #aaa;
 }
+
+.character-item {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  cursor: pointer;
+}
+
+.profile-picture-thumbnail {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+}

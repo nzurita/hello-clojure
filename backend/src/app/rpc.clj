@@ -32,7 +32,11 @@
                      {:name "Pedro"
                       :avatar "data/img/pedro-avatar.png"
                       :intro-text "Hola, me llamo Pedro"
-                      :cv-path "data/cv/pedro-cv.pdf"}])
+                      :cv-path "data/cv/pedro-cv.pdf"}
+                     {:name "Marta"
+                      :avatar "data/img/marta-avatar.png"
+                      :intro-text "Hola, me llamo Marta"
+                      :cv-path "data/cv/marta-cv.pdf"}])
 
    ; (let [id (:id params)
    ;      character (get demo-characters id)]
@@ -57,5 +61,12 @@
            :error "El personaje solicitado no existe"
            :character empty-character}))
  )
+
+(defmethod handle :get-characters
+  [_ params]
+  (map-indexed (fn [idx character]
+               {:id idx :name (:name character) :avatar (:avatar character)})
+             demo-characters)
+  )
 
 

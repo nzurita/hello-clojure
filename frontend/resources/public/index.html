@@ -29,6 +29,8 @@
       </div>
       <hr />
     </div>
+    <div id="character-list">
+    </div>
     <div id="character-container">
     </div>
 
@@ -101,7 +103,51 @@
           });
       });
 
-      /* #### CHARACTER #### */
+    /* #### CHARACTER #### */
+    function getCharacters()
+    {
+        const container = document.getElementById("character-list");
+        
+        fetch("/api/rpc/command/get-characters")
+          .then(r => r.json())
+          .then(data => {
+            const ul = document.createElement("ul");
+            console.log('getCharacters', data);
+            data.forEach(c => {
+                const li = document.createElement("li");
+                const img = document.createElement("img");
+
+                img.src = c.avatar;
+                img.alt = c.name ?? "Avatar";
+                img.classList.add("profile-picture", "profile-picture-thumbnail");
+                
+                const name = document.createElement("span");
+                name.classList.add("character-name");
+                name.textContent = c.name;
+
+                li.onclick = () => {
+                  const characterContainer = document.getElementById("character-container");
+                  showStatus("Enviando…");
+
+                  callGetCharacter(c.id)
+                    .then(processCharacterResponse)
+                    .then(function (character) {
+                      renderCharacter(characterContainer, character);
+                      showStatus("");
+                    })
+                    .catch(function (err) {
+                      showStatus(String(err));
+                    });
+                };
+
+                li.classList.add("character-item");
+
+                li.append(img, name);
+                ul.appendChild(li);
+            });
+            container.append(ul);
+          });           
+    }
 
     function renderCharacter(container, character) {
         console.log('renderCharacter', character);
@@ -135,8 +181,8 @@
     /**
     * Llama al comando RPC del backend (POST + JSON).
     */
-    function callGetCharacter() {
-        return fetch("/api/rpc/command/get-character?id=0")
+    function callGetCharacter(id) {
+        return fetch(`/api/rpc/command/get-character?id=${id}`)
             .then(function (resp) {
                 return resp.json().then(function (data) {
                   console.log(data);
@@ -167,6 +213,10 @@
               showStatus(String(err));
             });
       });
+
+    document.addEventListener("DOMContentLoaded", () => {
+      getCharacters();
+    });
     </script>
   </body>
 </html>
