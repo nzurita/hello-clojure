@@ -1,18 +1,70 @@
-body
-{
-	padding: 0;
-	margin: 0;
+:root {
+  --color-bg: #000;
+  --color-fg-primary: #e7e7e8;
+  --color-fg-secondary: #88959b;
+  --color-accent: #7efff5;
+  --color-bg-panel: #18181a;   /* Penpot $gray-950, opcional */
 }
 
-#app-status-bar
-{
-	position: absolute;
-	bottom: 0;
-	height: 32px;
-	width: 100%;
-	margin: 0;
-	box-sizing: border-box;
-	background-color: #aaa;
+html, body, #app {
+  height: 100%;
+  margin: 0;
+}
+
+body.app-theme {
+  background: var(--color-bg);
+  color: var(--color-fg-primary);
+  font-family: system-ui, -apple-system, sans-serif;
+}
+
+.app-shell {
+  display: grid;
+  grid-template-columns: 280px 1fr;
+  height: 100%;
+  min-height: 100vh;
+}
+
+.sidebar {
+  display: flex;
+  flex-direction: column;
+  background: var(--color-bg-panel);
+  border-right: 1px solid #2e3434;
+  min-height: 0;
+}
+
+.sidebar-section {
+  padding: 1rem;
+}
+
+.sidebar-section--list {
+  flex: 1;
+  overflow: auto;
+}
+
+.status-bar {
+  flex-shrink: 0;
+  height: 32px;
+  padding: 0 1rem;
+  display: flex;
+  align-items: center;
+  font-size: 0.85rem;
+  color: var(--color-fg-secondary);
+  background: #212426;
+  border-top: 1px solid #2e3434;
+}
+
+.main-panel {
+  padding: 1.5rem;
+  overflow: auto;
+  background: var(--color-bg);
+}
+
+button, .btn {
+  color: var(--color-bg);
+  background: var(--color-accent);
+  border: none;
+  padding: 0.5rem 1rem;
+  cursor: pointer;
 }
 
 .character-item {

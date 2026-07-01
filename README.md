@@ -1,18 +1,51 @@
 # Entorno de desarrollo
 
+## Crear el entorno
+
+```
+docker compose up -d --build
+docker compose exec wdev-clojure-jdk-21 bash
+
+# -P  prepara classpath y descarga jars
+cd /workspace/backend
+clojure -P -M:dev
+cd /workspace/common
+clojure -P
+cd /workspace/frontend
+pnpm install
+```
+
 ### Levantar el entorno
 
 `docker compose up -d`
+
+Tras instalar deps, conviene reiniciar backend y frontend en tmux:
+
+Engánchate a tmux:
+```
+docker compose exec wdev-clojure-jdk-21 tmux attach -t dev
+```
+
+En cada ventana (backend y frontend): **Ctrl+C para parar**, luego:
+
+```
+Backend: clojure -M:dev
+Frontend: pnpm run watch
+```
+
+Salir sin parar nada: Ctrl+b, luego d (detach).
+
+Atajos tmux: Ctrl+b n/p cambia de ventana.
 
 ### Tmux: Procesos de desarrollo
 
 A diferencia de LAMP (donde cmd.sh arranca servicios "fijos" como Apache/MariaDB), en Clojure los procesos de desarrollo son interactivos y con recarga en caliente:
 
-- PostgreSQL + nginx: servicios de fondo → estos sí tiene sentido que los arranque cmd.sh solos (ya lo hacen).
-- Backend (clojure -M -m app.core): proceso que quieres controlar tú; idealmente con un REPL conectado para recarga en caliente.
+- PostgreSQL + nginx: servicios de fondo.
+- Backend (clojure -M -m app.core): proceso manual; idealmente con un REPL conectado para recarga en caliente.
 - Frontend (shadow-cljs watch app): proceso que vigila los .cljs, recompila y hace hot-reload en el navegador.
 
-Engancharte para ver/controlar (cuando quieras mirar logs o tocar algo):
+Enganchar al REPL para ver/controlar:
 
 `docker compose exec wdev-clojure-jdk-21 tmux attach -t dev`
 
@@ -31,17 +64,17 @@ Dentro, te mueves entre ventanas con Ctrl+b y luego el número (0, 1, …) o Ctr
 ```
 
 > Ctrl+C → mata la JVM y te deja en el shell #.
-> escribes clojure -M:dev → vuelve el user=> limpio.
+> Comando `clojure -M:dev` → vuelve el user=> limpio.
 
 ### Programar
-Editas tus .cljs/.clj en el host (con tu editor de siempre). El watch del frontend detecta el cambio, recompila y recarga el navegador solo. (El backend, según cómo lo configuremos, se recarga vía REPL o reiniciando su ventana.)
+Editar .cljs/.clj en el host. El watch del frontend detecta el cambio, recompila y recarga el navegador solo. (El backend, según cómo lo configuremos, se recarga vía REPL o reiniciando su ventana.)
 
-**Frontend**: editas frontend/src/app/app.cljs → shadow recompila solo → recargas el navegador.
-**Backend**: conectas tu editor (Calva → Connect a localhost:6064) y evalúas; con #'core/handler los cambios se ven sin reiniciar. Si prefieres, en el REPL: (restart).
+**Frontend**: editas `frontend/src/app/app.cljs` → shadow recompila solo → recargar el navegador.
+**Backend**: conectar editor (Calva → Connect a localhost:6064) y evaluar; con #'core/handler los cambios se ven sin reiniciar. Si prefieres, en el REPL: `(restart)` o `(restart)`.
 
 ### Salir sin parar nada
-Pulsas Ctrl+b y luego d (detach). Te desengancha de tmux pero los procesos siguen vivos dentro del contenedor.
+Pulsar Ctrl+b y luego d (detach). Te desengancha de tmux pero los procesos siguen vivos dentro del contenedor.
 
-### Apagar al terminar el día:
+### Apagar al terminar:
 
 `docker compose down`

@@ -5,7 +5,14 @@
  ;; El MISMO módulo common/ que usa el backend, vía :local/root.
  ;; Malli llega de forma transitiva, así que el navegador puede validar
  ;; con el MISMO schema que el servidor.
- {app/common {:local/root "../common"}}
+ {app/common {:local/root "../common"}
+
+  funcool/rumext
+  {:git/tag "v2.25"
+   :git/sha "27e5a1a"
+   :git/url "https://github.com/funcool/rumext.git"}
+
+}
 
  :aliases
  ;; shadow-cljs (parte JVM) debe estar en el classpath; su versión ha de
