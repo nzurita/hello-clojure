@@ -22,4 +22,5 @@ frontend/resources/public/js/
 /backend/.rebel_readline_history
 .docker-container.dev
 CLAUDE.md
-
+environment.md
+_links-and-docs.md

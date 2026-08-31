@@ -5,7 +5,7 @@
 
 (mf/defc character-list*
   {::mf/props :obj}
-  [{:keys [selected-id on-select]}]
+  [{:keys [selected-character-id on-select]}]
   (let [characters (mf/use-state [])
         loading?   (mf/use-state true)
         error      (mf/use-state nil)]
@@ -30,7 +30,7 @@
         (for [^js c @characters]
           [:li
            {:key (.-id c)
-            :class (str "character-item" (when (= selected-id (.-id c)) " selected"))
+            :class (str "character-item" (when (= selected-character-id (.-id c)) " selected"))
             :on-click #(on-select (.-id c))}
            [:img.profile-picture.profile-picture-thumbnail
             {:src (.-image c) :alt (.-name c)}]

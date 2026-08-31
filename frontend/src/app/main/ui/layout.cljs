@@ -18,10 +18,10 @@
         error-planet          (mf/use-state nil)]
 
     (mf/with-effect [selected-character-id]
-      (when selected-character-id
+      (when @selected-character-id
         (reset! loading? true)
         (reset! error nil)
-        (-> (api/get-character selected-character-id)
+        (-> (api/get-character @selected-character-id)
             (.then (fn [^js data]
                      (reset! loading? false)
                      (if (.-ok data)
@@ -34,14 +34,14 @@
                       (reset! error (str err)))))))
 
     (mf/with-effect [selected-planet-id]
-      (when selected-planet-id
+      (when @selected-planet-id
         (reset! loading-planet? true)
         (reset! error-planet nil)
-        (-> (api/get-planet selected-planet-id)
+        (-> (api/get-planet @selected-planet-id)
             (.then (fn [^js data]
                      (reset! loading-planet? false)
                      (if (.-ok data)
-                       (reset! planet data)
+                       (reset! planet (.-planet data))
                        (reset! error-planet (.-error data)))))
             (.catch (fn [err]
                       (reset! loading-planet? false)

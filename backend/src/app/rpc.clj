@@ -36,7 +36,7 @@
                        :name "Norberto"
                        :image "data/img/main-character-4.png"
                        :description "Programador de dilatada experiencia."
-                       :ki "60000000"
+                       :ki "60.000.000"
                        :race "Human"
                        :affiliation "Clojure Team"
                        :originPlanet {:id "2"

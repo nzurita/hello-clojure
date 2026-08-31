@@ -67,6 +67,21 @@ button, .btn {
   cursor: pointer;
 }
 
+.main-panel {
+  display: grid;
+  grid-template-columns: max-content 1fr 1fr;
+  gap: 20px;
+  background-color: #24292e;
+  color: var(--color-accent);
+  padding: 20px;
+}
+
+.main-panel .character-wrapper,
+.main-panel .planet-wrapper {
+  display: flex;
+  justify-content: center;
+}
+
 .character-item {
   display: flex;
   align-items: center;
