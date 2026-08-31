@@ -21,7 +21,7 @@ pnpm install
 
 Tras instalar deps, conviene reiniciar backend y frontend en tmux:
 
-Engánchate a tmux:
+Enganchar a tmux:
 ```
 docker compose exec wdev-clojure-jdk-21 tmux attach -t dev
 ```

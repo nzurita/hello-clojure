@@ -1,7 +1,8 @@
 (ns app.rpc
   (:require
    [app.common.schema :as schema]
-   [app.common.schema-character :as schema-character]))
+   [app.common.schema-character :as schema-character]
+   [clj-http.client :as http]))
 
 ;; Patrón RPC de Penpot: un defmulti despacha por NOMBRE de comando.
 ;; Cada defmethod = un "endpoint" (~ una acción de controller / message handler).
@@ -13,60 +14,99 @@
   [method _params]
   {:ok false :error (str "comando desconocido: " (name method))})
 
-(defmethod handle :saludar-persona
-  [_ params]
-  (if (schema/valida? params)
-    {:ok true
-     :mensaje (str "Hola, " (:nombre params) " (" (:edad params) " años)")}
-    {:ok false :errores (schema/errores params)}))
+(def empty-character {:id nil
+                       :name nil
+                       :image nil
+                       :description nil
+                       :ki nil
+                       :race nil
+                       :affiliation nil
+                       :originPlanet {:id nil
+                                      :name nil
+                                      :isDestroyed nil
+                                      :description nil
+                                      :image nil
+                                      :deletedAt nil
+                                                          }
+                       :cv-path nil})
 
-(def empty-character {:name "-"
-                       :avatar "-"
-                       :intro-text "-"
-                       :cv-path "-"})
+(def empty-planet {:id nil :name nil :image nil})
 
-(def demo-characters [{:name "Norberto"
-                       :avatar "data/img/norberto-avatar.png"
-                       :intro-text "Hola, me llamo Norberto"
+(def main-character {:id "0"
+                       :name "Norberto"
+                       :image "data/img/main-character-4.png"
+                       :description "Programador de dilatada experiencia."
+                       :ki "60000000"
+                       :race "Human"
+                       :affiliation "Clojure Team"
+                       :originPlanet {:id "2"
+                                      :name "Tierra"
+                                      :isDestroyed false
+                                      :description "La Tierra también llamado Mundo del Dragón (Dragon World), es el planeta principal donde se desarrolla la serie de Dragon Ball. Se encuentra en el Sistema Solar de la Vía Láctea de las Galaxias del Norte del Universo 7, lugar que supervisa el Kaio del Norte, y tiene su equivalente en el Universo 6. El hogar de los terrícolas y los Guerreros Z. Ha sido atacado en varias ocasiones por enemigos poderosos."
+                                      :image "https://dragonball-api.com/planetas/Tierra_Dragon_Ball_Z.webp"
+                                      :deletedAt nil
+                                                          }
                        :cv-path "data/cv/norberto-cv.pdf"}
-                     {:name "Pedro"
-                      :avatar "data/img/pedro-avatar.png"
-                      :intro-text "Hola, me llamo Pedro"
-                      :cv-path "data/cv/pedro-cv.pdf"}
-                     {:name "Marta"
-                      :avatar "data/img/marta-avatar.png"
-                      :intro-text "Hola, me llamo Marta"
-                      :cv-path "data/cv/marta-cv.pdf"}])
+                     )
 
-   ; (let [id (:id params)
-   ;      character (get demo-characters id)]
-   ;  (if character
-   ;    (if (schema-character/valid? character)
-   ;      {:ok true :character character}
-   ;      {:ok false :error "invalid character data"})
-   ;    {:ok false :error "character not found"})))
-  ; (get demo-characters 0))
-(defmethod handle :get-character-0
-  [_ params]
-  {:ok true
-   :character (get demo-characters 0)})
+(def dragonball-api-base "https://dragonball-api.com/api/")
 
-(defmethod handle :get-character
-  [_ params]
-  (let [id (parse-long (get params "id"))]
-      (if (and (>= id 0) (< id (count demo-characters)))
-          {:ok true
-           :character (get demo-characters id)}
-          {:ok false
-           :error "El personaje solicitado no existe"
-           :character empty-character}))
- )
+(defn fetch-characters
+  "Pide la lista de personajes a la API externa. Devuelve el mapa de datos
+   ya parseado (con :items y :meta), tal cual lo entrega la API."
+  []
+  (let [resp (http/get (str dragonball-api-base "characters") {:as :json})]
+    (:body resp)))
 
 (defmethod handle :get-characters
   [_ params]
-  (map-indexed (fn [idx character]
-               {:id idx :name (:name character) :avatar (:avatar character)})
-             demo-characters)
-  )
+  (let [characters (:items (fetch-characters))]
+    {:ok true
+     :characters (map (fn [character]
+                         {:id (:id character)
+                          :name (:name character)
+                          :image (:image character)})
+                       (cons main-character characters))}))
 
 
+(defn fetch-character
+  "Pide un personaje por id a la API externa. Devuelve el mapa de datos
+   si existe, o nil si la API responde 404 (no encontrado)."
+  [id]
+  (let [resp (http/get (str dragonball-api-base "characters/" id)
+                        {:as :json :throw-exceptions false})]
+    (when (= 200 (:status resp))
+      (:body resp))))
+
+(defmethod handle :get-character
+  [_ params]
+  (let [id        (parse-long (get params "id"))
+        character (if (not= 0 id)
+                              (fetch-character id)
+                              main-character)]
+    (if character
+      {:ok true
+       :character character}
+      {:ok false
+       :error "El personaje solicitado no existe"
+       :character empty-character})))
+
+(defn fetch-planet
+  "Pide un planeta por id a la API externa. Devuelve el mapa de datos
+   si existe, o nil si la API responde 404 (no encontrado)."
+  [id]
+  (let [resp (http/get (str dragonball-api-base "planets/" id)
+                        {:as :json :throw-exceptions false})]
+    (when (= 200 (:status resp))
+      (:body resp))))
+
+(defmethod handle :get-planet
+  [_ params]
+  (let [id      (parse-long (get params "id"))
+        planet  (fetch-planet id)]
+    (if planet
+      {:ok true
+       :planet planet}
+      {:ok false
+       :error "El planeta solicitado no existe"
+       :planet empty-planet})))

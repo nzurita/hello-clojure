@@ -8,7 +8,8 @@
         metosin/reitit-core {:mvn/version "0.9.1"}
         metosin/reitit-ring {:mvn/version "0.9.1"}
         ;; JSON request/response (Penpot usa Transit; nosotros JSON por simplicidad).
-        cheshire/cheshire {:mvn/version "5.13.0"}}
+        cheshire/cheshire {:mvn/version "5.13.0"}
+        clj-http/clj-http {:mvn/version "3.13.0"}}
 
  ;; Alias de desarrollo (~ "scripts" de desarrollo en composer.json).
  ;; Añade nREPL (servidor de REPL en red) y cider-nrepl (middleware para que

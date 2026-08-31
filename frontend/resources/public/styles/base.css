@@ -72,10 +72,157 @@ button, .btn {
   align-items: center;
   gap: 0.5rem;
   cursor: pointer;
+  margin-bottom: 10px;
+}
+
+.character-item.selected {
+  background-color: var(--color-accent);
+  color: var(--color-bg);
 }
 
 .profile-picture-thumbnail {
-  width: 32px;
-  height: 32px;
-  border-radius: 50%;
+  width: 52px;
+  height: 52px;
+  object-fit: cover;
+  object-position: top;
+  display: block;
 }
+
+.dragonball-card {
+  width: 350px;
+  height: 700px;
+  border: 8px solid #232323;
+  border-radius: 8px;
+  background-color: #232323;
+}
+
+.card-frame {
+  position: relative;
+  height: 670px;
+  border: 2px solid #232323;
+  border-radius: 8px;
+  overflow: hidden;
+  padding-top: 30px;
+  display: flex;
+  flex-direction: column; /* mismo patron que #root: columna flex de altura fija */
+}
+
+.card-frame .card-picture {
+  position: relative;
+  z-index: 1;
+  max-width: 338px;
+  height: auto;
+}
+
+.dragonball-card .picture-frame {
+  position: relative;
+  flex: 0 0 400px; /* tamaño fijo, no crece ni se encoge */
+  height: 400px;
+  overflow: hidden;
+  display: flex;
+  justify-content: center; /* centra la imagen horizontalmente */
+  background-size: cover;       /* la imagen de fondo cubre todo el hueco */
+  background-position: center;  /* centrada en horizontal y vertical */
+  background-repeat: no-repeat;
+}
+
+.dragonball-card.character-card .picture-frame::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-color: rgba(150, 150, 150, 0.6);
+}
+
+.dragonball-card .card-title {
+  background-color: black;
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  padding: 4px;
+  margin: 0;
+}
+
+.dragonball-card .card-description {
+  background-color: #232323;
+  font-size: 9pt;
+  margin: 0;
+  padding: 8px;
+  flex: 1 1 auto; /* ahora SI puede encogerse para caber en el hueco disponible */
+  min-height: 0;  /* desactiva el "suelo" minimo por defecto, imprescindible aqui */
+  overflow: hidden; /* red de seguridad, por si algo se escapa igualmente */
+  display: flex;
+  flex-direction: column; /* el texto arriba, card-planet abajo del todo */
+}
+
+.dragonball-card .card-description > p {
+  margin: 0;
+  flex: 1 1 auto;    /* el parrafo es quien realmente crece/encoge */
+  min-height: 0;     /* sin esto, overflow-y:auto no llegaria a activarse */
+  overflow-y: auto;  /* si el texto no cabe, aparece scroll aqui dentro */
+}
+
+.dragonball-card .card-bottom {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+  padding: 4px;
+  margin: 0;
+  background-color: #232323;
+  flex: 0 0 auto;
+}
+
+.dragonball-card .card-force {
+  margin: 0;
+  color: white;
+  font-weight: 400;
+  font-style: italic;
+  font-size: 14pt;
+}
+
+.dragonball-card .card-info {
+  margin: 0;
+  margin-right: 10px;
+  text-align: right;
+  font-weight: 400;
+  font-style: italic;
+  font-size: 14pt;
+}
+
+.dragonball-card .card-planet {
+  display: flex;
+  align-items: center;
+  justify-content: center; /* centrado horizontal del conjunto */
+  gap: 8px;
+  flex-shrink: 0; /* nunca se comprime: el parrafo de arriba es quien cede espacio */
+}
+
+.dragonball-card .card-planet-small-picture {
+  max-width: 50px;
+  height: auto;
+}
+
+.dragonball-card .card-planet-name {
+  font-weight: 600;
+  font-size: 14pt;
+  margin: 0;
+}
+
+.planet-card {
+  width: 450px;
+  height: 600px;
+}
+
+.planet-card .card-frame {
+  width: 448px;
+  height: 570px;
+}
+
+.planet-card .card-frame .card-picture {
+  max-width: none;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+}
+
