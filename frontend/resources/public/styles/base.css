@@ -16,6 +16,60 @@ body.app-theme {
   color: var(--color-fg-primary);
   font-family: system-ui, -apple-system, sans-serif;
 }
+.splash-overlay {
+  position: fixed;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: rgba(0, 0, 0, 0.85);
+  z-index: 100;
+}
+
+.splash-box {
+  position: relative;
+  width: 90%;
+  max-width: 480px;
+  padding: 2.5rem;
+  border: 1px solid #2e3434;
+  border-radius: 8px;
+  background-color: var(--color-bg-panel);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.6);
+  text-align: center;
+}
+
+.splash-title {
+  margin: 0 0 0.25rem;
+  font-size: 1.8rem;
+  color: var(--color-accent);
+}
+
+.splash-author {
+  margin: 0 0 1.5rem;
+  font-size: 1rem;
+  font-weight: 400;
+  color: var(--color-fg-secondary);
+}
+
+.splash-description {
+  margin: 0 0 2rem;
+  color: var(--color-fg-primary);
+  line-height: 1.5;
+}
+
+.splash-enter {
+  display: inline-block;
+  padding: 0.5rem 1.5rem;
+  background: var(--color-accent);
+  color: var(--color-bg);
+  text-decoration: none;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.splash-enter:hover {
+  opacity: 0.85;
+}
 
 .app-shell {
   display: grid;
@@ -100,9 +154,16 @@ ul.status-list li.error {
 }
 
 .main-panel {
+  position: relative;
   padding: 1.5rem;
   overflow: auto;
   background: var(--color-bg);
+  display: grid;
+  grid-template-columns: max-content 1fr 1fr;
+  gap: 20px;
+  background-color: #24292e;
+  color: var(--color-accent);
+  padding: 20px;
 }
 
 button, .btn {
@@ -113,13 +174,20 @@ button, .btn {
   cursor: pointer;
 }
 
-.main-panel {
-  display: grid;
-  grid-template-columns: max-content 1fr 1fr;
-  gap: 20px;
-  background-color: #24292e;
-  color: var(--color-accent);
-  padding: 20px;
+.main-panel .btn-about {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  padding: 0;
+  background-color: transparent;
+  color: var(--color-fg-secondary);
+  border: 1px solid var(--color-fg-secondary);
+  border-radius: 50%;
 }
 
 .main-panel .character-wrapper,
