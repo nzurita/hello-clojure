@@ -84,7 +84,7 @@ ul.status-list li.error {
 
 .status-bar .btn-expand-collapse {
   position: absolute;
-  top: 0;
+  bottom: 0;
   right: 5px;
   cursor: pointer;
   background-color: transparent;

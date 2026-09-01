@@ -20,13 +20,13 @@
         planet                (mf/use-state nil)
         loading?              (mf/use-state false)
         loading-planet?       (mf/use-state false)
-        app-status            (mf/use-state (list {:type "info" :msg "Ready"}))
+        app-status            (mf/use-state (list {:type :info :msg "Ready"}))
         app-status-expanded   (mf/use-state false)]
 
     (mf/with-effect [selected-character-id]
       (when @selected-character-id
         (reset! loading? true)
-        (push-status! app-status {:type "info" :msg "Cargando"})
+        (push-status! app-status {:type :info :msg "Cargando"})
 
         (-> (api/get-character @selected-character-id)
             (.then (fn [^js data]
@@ -34,29 +34,29 @@
                      (if (.-ok data)
                        (do
                            (reset! character (.-character data))
-                              (push-status! app-status {:type "info" :msg (str "Cargado personaje " (.-id (.-character data)))})
+                              (push-status! app-status {:type :info :msg (str "Cargado personaje " (.-id (.-character data)))})
 
                            (reset! selected-planet-id (.-id (.-originPlanet (.-character data))) ))
-                       (push-status! app-status {:type "error" :msg (.-error data)}) )))
+                       (push-status! app-status {:type :error :msg (.-error data)}) )))
             (.catch (fn [err]
                       (reset! loading? false)
-                       (push-status! app-status {:type "error" :msg (str err)}) )))))
+                       (push-status! app-status {:type :error :msg (str err)}) )))))
 
     (mf/with-effect [selected-planet-id]
       (when @selected-planet-id
         (reset! loading-planet? true)
-        (push-status! app-status {:type "info" :msg "Cargando"})
+        (push-status! app-status {:type :info :msg "Cargando"})
         (-> (api/get-planet @selected-planet-id)
             (.then (fn [^js data]
                      (reset! loading-planet? false)
                      (if (.-ok data)
                        (do
                            (reset! planet (.-planet data))
-                           (push-status! app-status {:type "info" :msg (str "Cargado planeta " (.-id (.-planet data)))}))
-                       (push-status! app-status {:type "error" :msg (.-error data)}) )))
+                           (push-status! app-status {:type :info :msg (str "Cargado planeta " (.-id (.-planet data)))}))
+                       (push-status! app-status {:type :error :msg (.-error data)}) )))
             (.catch (fn [err]
                       (reset! loading-planet? false)
-                       (push-status! app-status {:type "error" :msg (str err)}) )))))
+                       (push-status! app-status {:type :error :msg (str err)}) )))))
 
 
     [:div.app-shell
@@ -73,7 +73,7 @@
           [:button {:class "btn-expand-collapse" :on-click #(swap! app-status-expanded not)}]
          [:ul.status-list
               (for [[idx msg] (map-indexed vector @app-status)]
-                (let [type (:type msg)]
+                (let [type (name (:type msg))]
                 [:li {:key idx :class type}
                  [:span (:msg msg)]]))
               ]
