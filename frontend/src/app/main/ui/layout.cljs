@@ -6,6 +6,12 @@
    [app.main.ui.planet-card :refer [planet-card*]]
    [rumext.v2 :as mf]))
 
+(def app-status-size 10)
+
+(defn- push-status!
+  [app-status entry]
+  (swap! app-status (fn [xs] (take app-status-size (conj xs entry)))))
+
 (mf/defc layout*
   []
   (let [selected-character-id (mf/use-state nil)
@@ -13,39 +19,44 @@
         selected-planet-id    (mf/use-state nil)
         planet                (mf/use-state nil)
         loading?              (mf/use-state false)
-        error                 (mf/use-state nil)
         loading-planet?       (mf/use-state false)
-        error-planet          (mf/use-state nil)]
+        app-status            (mf/use-state (list {:type "info" :msg "Ready"}))
+        app-status-expanded   (mf/use-state false)]
 
     (mf/with-effect [selected-character-id]
       (when @selected-character-id
         (reset! loading? true)
-        (reset! error nil)
+        (push-status! app-status {:type "info" :msg "Cargando"})
+
         (-> (api/get-character @selected-character-id)
             (.then (fn [^js data]
                      (reset! loading? false)
                      (if (.-ok data)
                        (do
                            (reset! character (.-character data))
+                              (push-status! app-status {:type "info" :msg (str "Cargado personaje " (.-id (.-character data)))})
+
                            (reset! selected-planet-id (.-id (.-originPlanet (.-character data))) ))
-                       (reset! error (.-error data)))))
+                       (push-status! app-status {:type "error" :msg (.-error data)}) )))
             (.catch (fn [err]
                       (reset! loading? false)
-                      (reset! error (str err)))))))
+                       (push-status! app-status {:type "error" :msg (str err)}) )))))
 
     (mf/with-effect [selected-planet-id]
       (when @selected-planet-id
         (reset! loading-planet? true)
-        (reset! error-planet nil)
+        (push-status! app-status {:type "info" :msg "Cargando"})
         (-> (api/get-planet @selected-planet-id)
             (.then (fn [^js data]
                      (reset! loading-planet? false)
                      (if (.-ok data)
-                       (reset! planet (.-planet data))
-                       (reset! error-planet (.-error data)))))
+                       (do
+                           (reset! planet (.-planet data))
+                           (push-status! app-status {:type "info" :msg (str "Cargado planeta " (.-id (.-planet data)))}))
+                       (push-status! app-status {:type "error" :msg (.-error data)}) )))
             (.catch (fn [err]
                       (reset! loading-planet? false)
-                      (reset! error-planet (str err)))))))
+                       (push-status! app-status {:type "error" :msg (str err)}) )))))
 
 
     [:div.app-shell
@@ -57,8 +68,17 @@
        [:> character-list* {:selected-character-id @selected-character-id
                             :on-select #(reset! selected-character-id %)}]]
 
-      [:footer.status-bar
-       "Ready"]]
+       [:footer.status-bar
+            {:class (when @app-status-expanded "expanded")}
+          [:button {:class "btn-expand-collapse" :on-click #(swap! app-status-expanded not)}]
+         [:ul.status-list
+              (for [[idx msg] (map-indexed vector @app-status)]
+                (let [type (:type msg)]
+                [:li {:key idx :class type}
+                 [:span (:msg msg)]]))
+              ]
+       ]
+     ]
 
       [:main.main-panel
         [:div.character-wrapper

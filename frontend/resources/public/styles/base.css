@@ -42,15 +42,61 @@ body.app-theme {
 }
 
 .status-bar {
+  position: relative;
   flex-shrink: 0;
   height: 32px;
   padding: 0 1rem;
   display: flex;
+  overflow: hidden;
   align-items: center;
   font-size: 0.85rem;
   color: var(--color-fg-secondary);
   background: #212426;
   border-top: 1px solid #2e3434;
+}
+
+.status-bar.expanded {
+  height: 200px;
+}
+
+ul.status-list {
+  list-style-type: none;
+  height: 32px;
+  padding: 0 20px 0 0;
+}
+
+.status-bar.expanded ul {
+  height: 200px;
+  overflow-y: auto;
+}
+
+ul.status-list li {
+  list-style-type: none;
+  height: 32px;
+  display: flex;
+  align-items: center;
+}
+
+ul.status-list li.error {
+  color: red;
+}
+
+
+.status-bar .btn-expand-collapse {
+  position: absolute;
+  top: 0;
+  right: 5px;
+  cursor: pointer;
+  background-color: transparent;
+  color: var(--color-fg-secondary);
+}
+
+.status-bar.expanded .btn-expand-collapse::before {
+  content: "▼";
+}
+
+.status-bar .btn-expand-collapse::before {
+  content: "▲";
 }
 
 .main-panel {

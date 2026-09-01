@@ -1,12 +1,10 @@
 (ns app.rpc
   (:require
-   [app.common.schema :as schema]
-   [app.common.schema-character :as schema-character]
    [clj-http.client :as http]))
 
 ;; Patrón RPC de Penpot: un defmulti despacha por NOMBRE de comando.
 ;; Cada defmethod = un "endpoint" (~ una acción de controller / message handler).
-;; El cliente llama "saludar-persona" y el runtime enruta aquí.
+;; El cliente llama "api/fetch-characters" y el runtime enruta aquí.
 
 (defmulti handle (fn [method _params] method))
 
