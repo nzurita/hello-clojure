@@ -139,6 +139,10 @@ ul.status-list li.error {
   color: red;
 }
 
+ul.status-list li.tmp {
+  font-style: italic;
+}
+
 .status-bar .btn-expand-collapse {
   position: absolute;
   bottom: 0;

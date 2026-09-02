@@ -6,7 +6,12 @@
 
 (defn push-status!
   [app-status entry]
-  (swap! app-status (fn [xs] (take app-status-size (conj xs entry)))))
+  (swap! app-status
+         (fn [xs]
+           (let [cleaned (if (= :tmp (:type (first xs)))
+                           (rest xs)
+                           xs)]
+             (take app-status-size (conj cleaned entry))))))
 
 (mf/defc app-status*
   {::mf/props :obj}

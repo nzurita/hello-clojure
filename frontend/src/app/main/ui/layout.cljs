@@ -42,7 +42,7 @@
 
     (mf/with-effect [selected-character-id]
       (when @selected-character-id
-        (push-status! app-status {:type :info :msg "Cargando personaje"})
+        (push-status! app-status {:type :tmp :msg "Cargando personaje"})
 
         (-> (api/get-character @selected-character-id)
             (.then (fn [^js data]
@@ -58,7 +58,7 @@
 
     (mf/with-effect [selected-planet-id]
       (when @selected-planet-id
-        (push-status! app-status {:type :info :msg "Cargando planeta"})
+        (push-status! app-status {:type :tmp :msg "Cargando planeta"})
         (-> (api/get-planet @selected-planet-id)
             (.then (fn [^js data]
                      (if (.-ok data)
