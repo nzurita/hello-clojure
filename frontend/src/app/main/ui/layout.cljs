@@ -31,10 +31,11 @@
     (mf/with-effect [current-page]
       (-> (api/get-characters @current-page)
           (.then (fn [^js data]
-                   (js/console.log "get-characters" data)
+        (push-status! app-status {:type :tmp :msg (str "Cargando personajes página " @current-page)})
                    (if (.-ok data)
                      (do (reset! characters (.-characters data))
                          (reset! list-meta-info (js->clj (.-meta data) :keywordize-keys true)) 
+                         (push-status! app-status {:type :info :msg (str "Cargados personajes página " @current-page)})
                      )
                      (push-status! app-status {:type :error :msg "No se pudieron cargar los personajes."}) )))
           (.catch (fn [err]
