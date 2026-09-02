@@ -52,19 +52,27 @@
 (defn fetch-characters
   "Pide la lista de personajes a la API externa. Devuelve el mapa de datos
    ya parseado (con :items y :meta), tal cual lo entrega la API."
-  []
-  (let [resp (http/get (str dragonball-api-base "characters") {:as :json})]
+  [page]
+  (let [resp (http/get (str dragonball-api-base "characters?page=" page) {:as :json})]
     (:body resp)))
 
 (defmethod handle :get-characters
   [_ params]
-  (let [characters (:items (fetch-characters))]
-    {:ok true
+  (let [page (parse-long (get params "page"))
+        resp (fetch-characters page)]
+  		{:ok true
      :characters (map (fn [character]
                          {:id (:id character)
                           :name (:name character)
                           :image (:image character)})
-                       (cons main-character characters))}))
+                       (if (= page 1)
+                       		(cons main-character (:items resp))
+                       		(:items resp)))
+     :meta {:totalItems (:totalItems (:meta resp))
+             :itemCount (:itemCount (:meta resp))
+             :itemsPerPage (:itemsPerPage (:meta resp))
+             :totalPages (:totalPages (:meta resp))
+             :currentPage (:currentPage (:meta resp))}}))
 
 
 (defn fetch-character

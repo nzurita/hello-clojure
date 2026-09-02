@@ -16,6 +16,8 @@ body.app-theme {
   color: var(--color-fg-primary);
   font-family: system-ui, -apple-system, sans-serif;
 }
+
+/* splash screen */
 .splash-overlay {
   position: fixed;
   inset: 0;
@@ -78,6 +80,7 @@ body.app-theme {
   min-height: 100vh;
 }
 
+/* sidebar */
 .sidebar {
   display: flex;
   flex-direction: column;
@@ -95,6 +98,7 @@ body.app-theme {
   overflow: auto;
 }
 
+/* status */
 .status-bar {
   position: relative;
   flex-shrink: 0;
@@ -135,7 +139,6 @@ ul.status-list li.error {
   color: red;
 }
 
-
 .status-bar .btn-expand-collapse {
   position: absolute;
   bottom: 0;
@@ -153,6 +156,57 @@ ul.status-list li.error {
   content: "▲";
 }
 
+button, .btn {
+  color: var(--color-bg);
+  background: var(--color-accent);
+  border: none;
+  padding: 0.5rem 1rem;
+  cursor: pointer;
+}
+
+/* character list */
+.character-item {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  cursor: pointer;
+  margin-bottom: 10px;
+}
+
+.character-item.selected {
+  background-color: var(--color-accent);
+  color: var(--color-bg);
+}
+
+.profile-picture-thumbnail {
+  width: 52px;
+  height: 52px;
+  object-fit: cover;
+  object-position: top;
+  display: block;
+}
+
+/* list pagination */
+.list-pages {
+  list-style-type: none;
+  display: flex;
+  justify-content: center;
+  margin-top: 20px;  
+}
+
+.list-pages li {
+  padding: 6px;
+  border: 1px solid var(--color-fg-secondary);
+  cursor: pointer;
+}
+
+.list-pages li.selected {
+  background-color: var(--color-accent);
+  border-color: var(--color-accent);
+  color: var(--color-bg);
+}
+
+/* main panel / cards container */
 .main-panel {
   position: relative;
   padding: 1.5rem;
@@ -164,14 +218,6 @@ ul.status-list li.error {
   background-color: #24292e;
   color: var(--color-accent);
   padding: 20px;
-}
-
-button, .btn {
-  color: var(--color-bg);
-  background: var(--color-accent);
-  border: none;
-  padding: 0.5rem 1rem;
-  cursor: pointer;
 }
 
 .main-panel .btn-about {
@@ -196,27 +242,7 @@ button, .btn {
   justify-content: center;
 }
 
-.character-item {
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-  cursor: pointer;
-  margin-bottom: 10px;
-}
-
-.character-item.selected {
-  background-color: var(--color-accent);
-  color: var(--color-bg);
-}
-
-.profile-picture-thumbnail {
-  width: 52px;
-  height: 52px;
-  object-fit: cover;
-  object-position: top;
-  display: block;
-}
-
+/* cards */
 .dragonball-card {
   width: 350px;
   height: 700px;

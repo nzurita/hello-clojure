@@ -1,7 +1,7 @@
 (ns app.main.api)
 
-(defn get-characters []
-  (-> (js/fetch "/api/rpc/command/get-characters")
+(defn get-characters [page]
+  (-> (js/fetch (str "/api/rpc/command/get-characters?page=" page))
       (.then (fn [resp] (.json resp)))))
 
 (defn get-character [id]
