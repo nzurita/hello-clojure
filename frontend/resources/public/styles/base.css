@@ -86,6 +86,7 @@ body.app-theme {
 
 /* sidebar */
 .sidebar {
+  position: relative;
   display: flex;
   flex-direction: column;
   background: var(--color-bg-panel);
@@ -93,8 +94,35 @@ body.app-theme {
   min-height: 0;
 }
 
+.sidebar-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-shrink: 0;
+  padding: 0px 1rem;
+}
+
+.sidebar-header h2 {
+  font-size: 0.9rem;
+  color: var(--color-fg-secondary);
+}
+
+.btn-about {
+  /*position: static;*/
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  padding: 0;
+  background-color: transparent;
+  color: var(--color-fg-secondary);
+  border: 1px solid var(--color-fg-secondary);
+  border-radius: 50%;
+}
+
 .sidebar-section {
-  padding: 1rem;
+  padding: 3px 1rem;
 }
 
 .sidebar-section-list {
@@ -222,27 +250,12 @@ button, .btn {
   overflow: auto;
   background: var(--color-bg);
   display: grid;
-  grid-template-columns: max-content 1fr 1fr;
+  grid-template-columns: max-content max-content;
+  min-width: 0;
   gap: 20px;
   background-color: #24292e;
   color: var(--color-accent);
   padding: 20px;
-}
-
-.main-panel .btn-about {
-  position: absolute;
-  top: 20px;
-  right: 20px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 32px;
-  height: 32px;
-  padding: 0;
-  background-color: transparent;
-  color: var(--color-fg-secondary);
-  border: 1px solid var(--color-fg-secondary);
-  border-radius: 50%;
 }
 
 .main-panel .character-wrapper,
@@ -255,6 +268,8 @@ button, .btn {
 .dragonball-card {
   width: 350px;
   height: 700px;
+  box-sizing: border-box;
+  padding: 1px;
   border: 8px solid #232323;
   border-radius: 8px;
   background-color: #232323;
@@ -262,7 +277,9 @@ button, .btn {
 
 .card-frame {
   position: relative;
-  height: 670px;
+  height: 100%;
+  width: auto;
+  box-sizing: border-box;
   border: 2px solid #232323;
   border-radius: 8px;
   overflow: hidden;
@@ -274,7 +291,7 @@ button, .btn {
 .card-frame .card-picture {
   position: relative;
   z-index: 1;
-  max-width: 338px;
+  max-width: 100%;
   height: auto;
 }
 
@@ -378,8 +395,7 @@ button, .btn {
 }
 
 .planet-card .card-frame {
-  width: 448px;
-  height: 570px;
+  height: 100%;
 }
 
 .planet-card .card-frame .card-picture {
@@ -390,3 +406,111 @@ button, .btn {
   object-position: center;
 }
 
+/* chrome: pestaña, cierre y fondo del overlay */
+.btn-sidebar-toggle,
+.btn-sidebar-close {
+  display: none;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  background-color: var(--color-bg-panel);
+  color: var(--color-fg-secondary);
+  border: 1px solid var(--color-fg-secondary);
+  cursor: pointer;
+}
+
+.btn-sidebar-toggle {
+  position: fixed;
+  left: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 25;
+  width: 28px;
+  height: 72px;
+  border-left: none;
+  border-radius: 0 8px 8px 0;
+}
+
+.btn-sidebar-toggle::before {
+  content: "☰";
+}
+
+.btn-sidebar-close {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+}
+
+.btn-sidebar-close::before {
+  content: "✕";
+}
+
+.sidebar-header-actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+/* tablet apaisada: sidebar fuera del flujo, flotando 280px */
+@media (max-width: 1199px) {
+  .app-shell {
+    display: block;
+    height: 100%;
+  }
+
+  .sidebar {
+    position: fixed;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    width: 280px;
+    z-index: 20;
+    transform: translateX(-100%);
+    transition: transform 0.2s ease;
+  }
+
+  .sidebar.open {
+    transform: translateX(0);
+  }
+
+  .btn-sidebar-toggle {
+    display: flex;
+  }
+
+  .app-shell.sidebar-open .btn-sidebar-toggle {
+    display: none;
+  }
+
+  .btn-sidebar-close {
+    display: flex;
+  }
+
+  .main-panel {
+    height: 100%;
+  }
+}
+
+/* móvil portrait: sidebar a pantalla completa, cartas apiladas */
+@media (max-width: 699px) {
+  .sidebar {
+    width: 100%;
+  }
+
+  .main-panel {
+    grid-template-columns: 1fr;
+    justify-items: center;
+  }
+
+  .character-wrapper,
+  .planet-wrapper {
+    width: 100%;
+  }
+
+  .dragonball-card {
+    width: min(350px, 100%);
+  }
+
+  .planet-card {
+    width: min(450px, 100%);
+  }
+}

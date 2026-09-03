@@ -19,6 +19,7 @@
 (mf/defc layout*
   []
   (let [splash-screen-active? (mf/use-state (nil? (.getItem js/localStorage splash-seen-key)))
+        sidebar-open?         (mf/use-state true)
         current-page          (mf/use-state "1")
         list-meta-info        (mf/use-state default-list-meta-info)
         characters            (mf/use-state [])
@@ -50,9 +51,9 @@
                      (if (.-ok data)
                        (do
                            (reset! character (.-character data))
-                              (push-status! app-status {:type :info :msg (str "Cargado personaje " (.-id (.-character data)))})
-
-                           (reset! selected-planet-id (.-id (.-originPlanet (.-character data))) ))
+                           (push-status! app-status {:type :info :msg (str "Cargado personaje " (.-id (.-character data)))})
+                           (reset! selected-planet-id (.-id (.-originPlanet (.-character data))) )
+                           (reset! sidebar-open? false))
                        (push-status! app-status {:type :error :msg (.-error data)}) )))
             (.catch (fn [err]
                       (push-status! app-status {:type :error :msg (str err)}) )))))
@@ -74,12 +75,17 @@
       [:> splash-screen* {:splash-active @splash-screen-active? :on-close-splash #(do
                                                                                     (.setItem js/localStorage splash-seen-key "1")
                                                                                     (reset! splash-screen-active? false))}]
-      [:div.app-shell
-       [:aside.sidebar
+      [:button.btn-sidebar-toggle {:on-click #(reset! sidebar-open? true)}]
+      [:div.app-shell {:class (when @sidebar-open? "sidebar-open")}
+       [:aside.sidebar {:class (when @sidebar-open? "open")}
+        [:header.sidebar-header
+          [:h2 "Characters"]
+          [:div.sidebar-header-actions
+            [:button.btn-sidebar-close {:on-click #(reset! sidebar-open? false)}]
+            [:button.btn-about {:on-click #(reset! splash-screen-active? true)} "?"]
+          ]
+        ]
         [:section.sidebar-section.sidebar-section-list
-         [:h2 {:style {:font-size "0.9rem"
-                       :color "var(--color-fg-secondary)"}}
-          "Characters"]
          [:> character-list* {:characters @characters
                               :list-meta-info @list-meta-info
                               :selected-character-id @selected-character-id
@@ -89,7 +95,6 @@
        ]
 
        [:main.main-panel
-          [:button.btn-about {:on-click #(reset! splash-screen-active? true)} "?"]
           [:div.character-wrapper
             [:> character-card* {:character @character}]
           ]
