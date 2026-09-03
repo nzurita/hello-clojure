@@ -460,7 +460,7 @@ button, .btn , a.btn{
 
 .btn-video-close {
   position: absolute;
-  top: 0;
+  top: -32px;
   right: 0;
   width: 28px;
   height: 28px;
