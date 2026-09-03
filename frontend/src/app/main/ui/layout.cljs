@@ -70,13 +70,13 @@
             (.catch (fn [err]
                       (push-status! app-status {:type :error :msg (str err)}) )))))
 
-    [:div
+    [:div.app-wrapper
       [:> splash-screen* {:splash-active @splash-screen-active? :on-close-splash #(do
                                                                                     (.setItem js/localStorage splash-seen-key "1")
                                                                                     (reset! splash-screen-active? false))}]
       [:div.app-shell
        [:aside.sidebar
-        [:section.sidebar-section.sidebar-section--list
+        [:section.sidebar-section.sidebar-section-list
          [:h2 {:style {:font-size "0.9rem"
                        :color "var(--color-fg-secondary)"}}
           "Characters"]
