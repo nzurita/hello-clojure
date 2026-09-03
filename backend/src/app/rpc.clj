@@ -15,6 +15,8 @@
 (def empty-character {:id nil
                        :name nil
                        :image nil
+                       :video nil
+                       :cv nil
                        :description nil
                        :ki nil
                        :race nil
@@ -33,9 +35,11 @@
 (def main-character {:id "0"
                        :name "Norberto"
                        :image "data/img/main-character-4.png"
+                       :video "data/main-character-presentation.mp4"
+                       :cv "data/main-character-cv.pdf"
                        :description "Ingeniero de software con 25 años de experiencia, los últimos años ha trabajado por cuenta propia principalmente con PHP Symfony y Microsoft .NET. En empresas anteriores también ha trabajado con Java, Oracle Forms, PL/SQL, ASP clásico, C y C++."
                        :ki "1.000"
-                       :programming-ki "60.000.000"
+                       :programmingKi "50.000.000"
                        :race "Human"
                        :affiliation "Clojure Team"
                        :originPlanet {:id "2"
@@ -99,7 +103,7 @@
         (update :description str (if android?
                                    " Grandes dotes en desarrollo de software aunque tiene antecedentes violentos en trabajos anteriores."
                                    " No sabe programar."))
-        (assoc :programming-ki (if android? "60.000.000" "0")))))
+        (assoc :programmingKi (if android? "60.000.000" "0")))))
 
 (defmethod handle :get-character
   [_ params]

@@ -12,6 +12,8 @@ node_modules/
 .shadow-cljs/
 .pnpm-store/
 frontend/resources/public/js/
+frontend/resources/public/data/main-character-cv.pdf
+frontend/resources/public/data/main-character-presentation.mp4
 
 # Logs y temporales
 *.log
