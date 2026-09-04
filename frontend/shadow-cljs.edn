@@ -1,5 +1,5 @@
 ;; Configuración de shadow-cljs (el "bundler" de ClojureScript, ~ webpack).
-;; Ahora las dependencias se gestionan desde deps.edn (como Penpot):
+;; Las dependencias JVM se gestionan desde deps.edn:
 ;; :deps {:aliases [:dev]} le dice a shadow que use deps.edn con el alias :dev.
 {:deps {:aliases [:dev]}
 

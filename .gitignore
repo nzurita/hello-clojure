@@ -1,4 +1,4 @@
-# Penpot: solo material de referencia, NO se versiona (656 MB + su propio .git)
+# Penpot: solo material de referencia, NO se versiona
 /penpot/
 
 # Clojure / tools.deps
@@ -23,6 +23,10 @@ frontend/resources/public/data/main-character-presentation.mp4
 
 /backend/.rebel_readline_history
 .docker-container.dev
+_links-and-docs.md
+ARCH.md
 CLAUDE.md
 environment.md
-_links-and-docs.md
+STACK.md
+training-react-migration.md
+training.md

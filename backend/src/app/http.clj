@@ -1,8 +1,6 @@
 (ns app.http
   (:require
    [cheshire.core :as json]
-   [clojure.string :as str]
-   [app.common.schema :as schema]
    [app.rpc :as rpc]
    [reitit.ring :as ring]
    [reitit.ring.middleware.parameters :as parameters]))
@@ -27,36 +25,17 @@
 
 ;; --- Handlers ----------------------------------------------------------------
 
-(defn- app-handler
-  "Ruta legacy de las fases 6–7: demo de validación en texto plano."
-  [_request]
-  (let [ejemplos [{:nombre "Norberto" :email "norberto@example.com" :edad 40}
-                  {:nombre ""         :email "no-es-un-email"        :edad -3}]
-        linea (fn [p]
-                (if (schema/valida? p)
-                  (str p "  =>  VÁLIDA")
-                  (str p "  =>  INVÁLIDA: " (schema/errores p))))]
-    {:status 200
-     :headers {"Content-Type" "text/plain; charset=utf-8"}
-     :body (str "Validación con el schema de common/ (Malli):\n\n"
-                (str/join "\n" (map linea ejemplos)))}))
-
-;; method= :get 
-;; query-params= nil 
-;; query-string= id=0 
-;; path-params {:method-name get-character}
-;; parameters= nil
 (defn- rpc-handler
-  "Entrada RPC (~ Penpot /api/rpc/command/:method-name).
-   :request-method GET sin body o POST con JSON en el body; el nombre del comando va en la URL."
+  "Entrada RPC: /api/rpc/command/:method-name.
+   GET sin body o POST con JSON; el nombre del comando va en la URL."
   [request]
   (let [method-name (get-in request [:path-params :method-name])
         method-kw (keyword method-name)]
     (try
       (let [params (if (= (:request-method request) :get)
-      													(:query-params request)
-      													(or (read-json-body request) {}))
-           result (rpc/handle method-kw params)]
+                     (:query-params request)
+                     (or (read-json-body request) {}))
+            result (rpc/handle method-kw params)]
         (if (contains? (methods rpc/handle) method-kw)
           (json-response 200 result)
           (json-response 404 result)))
@@ -67,7 +46,6 @@
 
 (def routes
   ["/api"
-   ["/app" {:get app-handler}]
    ["/rpc/command/:method-name" {:get rpc-handler :post rpc-handler}]])
 
 (def router
@@ -75,8 +53,8 @@
 
 (def handler
   (ring/ring-handler
-    router
-    (ring/routes
-      (ring/create-resource-handler {:path "/"})
-      (ring/create-default-handler))
-    {:middleware [parameters/parameters-middleware]}))
+   router
+   (ring/routes
+    (ring/create-resource-handler {:path "/"})
+    (ring/create-default-handler))
+   {:middleware [parameters/parameters-middleware]}))

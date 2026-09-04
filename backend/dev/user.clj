@@ -1,7 +1,6 @@
 ;; Namespace "user": Clojure lo carga automáticamente al iniciar el REPL si
 ;; está en el classpath (aquí, vía :extra-paths ["dev"] del alias :dev).
-;; Es el sitio idiomático para utilidades de desarrollo. En Penpot existe un
-;; dev/user.clj muy parecido con (start)/(stop)/(restart) del sistema.
+;; Es el sitio idiomático para utilidades de desarrollo (start/stop/reload).
 (ns user
   (:require
    [ring.adapter.jetty :as jetty]
@@ -39,11 +38,9 @@
    #'core/handler (la VAR), el cambio se aplica al instante SIN reiniciar.
    Es el equivalente backend al hot-reload del frontend, pero disparado por ti."
   []
-  ;; common/ primero: app.rpc depende de app.common.schema-character.
-  (require 'app.common.schema
-           'app.common.schema-character
+  (require 'app.common.schema-character
            'app.rpc
            'app.http
            'app.core
            :reload)
-  (println "common + app.rpc, app.http y app.core recargados."))
+  (println "app.common.schema-character, app.rpc, app.http y app.core recargados."))

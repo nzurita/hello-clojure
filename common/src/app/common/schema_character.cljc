@@ -3,23 +3,40 @@
    [malli.core :as m]
    [malli.error :as me]))
 
-;; Un schema de Malli es simplemente un DATO (un vector), no una clase con
-;; anotaciones. Esto describe la "forma" válida de una persona.
-(def TaleCharacter
+;; Schema testimonial: describe la forma de un personaje de carta (CardCharacter).
+;; El nombre evita "Character" por colisión con java.lang.Character en la JVM.
+
+(def OriginPlanet
   [:map
+   [:id [:or :string :int]]
+   [:name :string]
+   [:isDestroyed :boolean]
+   [:description :string]
+   [:image :string]
+   [:deletedAt {:optional true} [:maybe :string]]])
+
+;; Formato alineado con app.rpc/main-character y las respuestas de :get-character.
+(def CardCharacter
+  [:map
+   [:id [:or :string :int]]
    [:name [:string {:min 1}]]
-   [:avatar :string]
-   [:intro-text :string]
-   [:cv-path :string]])
+   [:image :string]
+   [:video {:optional true} :string]
+   [:cv {:optional true} :string]
+   [:description {:optional true} :string]
+   [:ki {:optional true} :string]
+   [:programmingKi {:optional true} :string]
+   [:race {:optional true} :string]
+   [:affiliation {:optional true} :string]
+   [:originPlanet {:optional true} OriginPlanet]])
 
 (defn valid?
   "true si `character` cumple el schema, false si no."
   [character]
-  (m/validate TaleCharacter character))
+  (m/validate CardCharacter character))
 
 (defn errors
-  "Devuelve un mapa {campo [mensajes]} con errores LEGIBLES, o nil si es válida.
-   (m/explain da el detalle técnico; me/humanize lo traduce a mensajes.)"
+  "Devuelve un mapa {campo [mensajes]} con errores legibles, o nil si es válido."
   [character]
-  (-> (m/explain TaleCharacter character)
+  (-> (m/explain CardCharacter character)
       (me/humanize)))

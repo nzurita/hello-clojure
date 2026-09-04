@@ -13,7 +13,6 @@
       [:p {:style {:color "var(--color-fg-secondary)"}}
        "Selecciona un personaje de la lista."]
 
-      ; (cond (not (nil? (.-originPlanet c))) {:background-image (str "url(\"" (.-image (.-originPlanet c)) "\")")} :else {} )
       character
       (let [^js c character]
         [:div.dragonball-card.character-card

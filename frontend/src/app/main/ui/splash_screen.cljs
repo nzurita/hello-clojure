@@ -2,7 +2,7 @@
   (:require
    [rumext.v2 :as mf]))
 
-(def app-info {:author "by Norberto Zurita" :name "Hello World!" :description "Hola mundo! Hablando en Clojure! Este es un pequeño proyecto de presentación y práctica de Clojure."})
+(def app-info {:author "by Norberto Zurita" :name "Hello World!" :description "Hola mundo! Hablando en Clojure! Este es un pequeño proyecto de presentación y práctica de Clojure con React."})
 
 (mf/defc splash-screen*
   {::mf/props :obj}

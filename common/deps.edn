@@ -1,6 +1,5 @@
-;; Módulo "common": código COMPARTIDO entre backend (JVM) y frontend (JS).
-;; Es el equivalente a penpot/common. Aquí solo va lógica común (schemas,
-;; tipos, utilidades), nada específico de servidor o navegador.
+;; Módulo "common": código compartido entre backend (JVM) y frontend (JS).
+;; Schemas, tipos y utilidades; nada específico de servidor o navegador.
 {:paths ["src"]
  :deps {org.clojure/clojure {:mvn/version "1.12.1"}
         ;; Malli: definición y validación de schemas (~ Symfony Validator).

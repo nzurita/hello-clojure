@@ -1,10 +1,8 @@
-;; Dependencias del frontend gestionadas por deps.edn (como Penpot).
-;; shadow-cljs leerá de aquí el classpath (ver :deps en shadow-cljs.edn).
+;; Dependencias del frontend gestionadas por deps.edn
 {:paths ["src"]
  :deps
- ;; El MISMO módulo common/ que usa el backend, vía :local/root.
- ;; Malli llega de forma transitiva, así que el navegador puede validar
- ;; con el MISMO schema que el servidor.
+ ;; Módulo common/ compartido con el backend, vía :local/root.
+ ;; Malli llega de forma transitiva (schemas en common/).
  {app/common {:local/root "../common"}
 
   funcool/rumext
