@@ -1,12 +1,20 @@
-# Entorno de desarrollo
+# Hello World!
 
-## Crear el entorno
+Clojure + React training project. Dragon Ball characters and planets using [Dragon Ball API](https://web.dragonball-api.com/) with some added customization. Aimed to train some of [Penpot](https://github.com/penpot/penpot) tech stack components.
+
+By [Norberto Zurita](https://izuca.es)
+
+# Development environment
+
+`docker` folder includes development environment configuration: Nginx, JDK, Node JS and PostgreSQL among others.
+
+## Create environment
 
 ```
 docker compose up -d --build
 docker compose exec wdev-clojure-jdk-21 bash
 
-# -P  prepara classpath y descarga jars
+# -P  prepares classpath and download jars
 cd /workspace/backend
 clojure -P -M:dev
 cd /workspace/common
@@ -15,43 +23,41 @@ cd /workspace/frontend
 pnpm install
 ```
 
-### Levantar el entorno
+### Run environment
 
 `docker compose up -d`
 
-Tras instalar deps, conviene reiniciar backend y frontend en tmux:
+After installing deps, restart backend and frontend in tmux:
 
-Enganchar a tmux:
+Run tmux:
 ```
 docker compose exec wdev-clojure-jdk-21 tmux attach -t dev
 ```
 
-En cada ventana (backend y frontend): **Ctrl+C para parar**, luego:
+In each window (backend and frontend): **Ctrl+C** to stop, then:
 
 ```
 Backend: clojure -M:dev
 Frontend: pnpm run watch
 ```
 
-Salir sin parar nada: Ctrl+b, luego d (detach).
+Exit without stopping: Ctrl+b, then d (detach).
 
-Atajos tmux: Ctrl+b n/p cambia de ventana.
+### Tmux: development processes
 
-### Tmux: Procesos de desarrollo
+In Clojure development processes are interactive and require hot reload:
 
-A diferencia de LAMP (donde cmd.sh arranca servicios "fijos" como Apache/MariaDB), en Clojure los procesos de desarrollo son interactivos y con recarga en caliente:
+- PostgreSQL + nginx: background services.
+- Backend (clojure -M -m app.core): manual process, active REPL for hot reload.
+- Frontend (shadow-cljs watch app): manual process, recompiles and authomaticly hot reloads .cljs in browser.
 
-- PostgreSQL + nginx: servicios de fondo.
-- Backend (clojure -M -m app.core): proceso manual; idealmente con un REPL conectado para recarga en caliente.
-- Frontend (shadow-cljs watch app): proceso que vigila los .cljs, recompila y hace hot-reload en el navegador.
-
-Enganchar al REPL para ver/controlar:
+**Run REPL:**
 
 `docker compose exec wdev-clojure-jdk-21 tmux attach -t dev`
 
-Dentro, te mueves entre ventanas con Ctrl+b y luego el número (0, 1, …) o Ctrl+b n/p (siguiente/anterior). En cada ventana ves los logs de ese proceso, puedes hacer Ctrl+C para pararlo y relanzarlo, etc.
+Inside, you move between windows with Ctrl+b and then the number (0, 1, …) or Ctrl+b n/p (next/previous).
 
-**Para cargar las referencias de funciones:**
+**Load and refer function docs:**
 
 `(require '[clojure.repl :refer :all])`
 
@@ -63,18 +69,11 @@ Dentro, te mueves entre ventanas con Ctrl+b y luego el número (0, 1, …) o Ctr
 (source dir)
 ```
 
-> Ctrl+C → mata la JVM y te deja en el shell #.
-> Comando `clojure -M:dev` → vuelve el user=> limpio.
+> Ctrl+C → kill JVM.
+> Command `clojure -M:dev` → returns clean user=>.
 
-### Programar
-Editar .cljs/.clj en el host. El watch del frontend detecta el cambio, recompila y recarga el navegador solo. (El backend, según cómo lo configuremos, se recarga vía REPL o reiniciando su ventana.)
-
-**Frontend**: editas `frontend/src/app/app.cljs` → shadow recompila solo → recargar el navegador.
-**Backend**: conectar editor (Calva → Connect a localhost:6064) y evaluar; con #'core/handler los cambios se ven sin reiniciar. Si prefieres, en el REPL: `(restart)` o `(restart)`.
-
-### Salir sin parar nada
-Pulsar Ctrl+b y luego d (detach). Te desengancha de tmux pero los procesos siguen vivos dentro del contenedor.
-
-### Apagar al terminar:
+### End and exit:
 
 `docker compose down`
+
+# Production environment
