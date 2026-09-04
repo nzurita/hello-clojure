@@ -579,3 +579,16 @@ button, .btn , a.btn{
     width: min(450px, 100%);
   }
 }
+
+/* landscape estrecho */
+@media (max-height: 500px) and (orientation: landscape) {
+  .btn-video-close {
+    top: 8px;
+    right: 8px;
+    background-color: rgba(0, 0, 0, 0.65);
+  }
+
+  .video-modal video {
+    max-height: calc(100vh - 48px);
+  }
+}
