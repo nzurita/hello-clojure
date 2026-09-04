@@ -23,10 +23,5 @@ frontend/resources/public/data/main-character-presentation.mp4
 
 /backend/.rebel_readline_history
 .docker-container.dev
-_links-and-docs.md
-ARCH.md
-CLAUDE.md
-environment.md
-STACK.md
-training-react-migration.md
-training.md
+*.md
+!README.md
