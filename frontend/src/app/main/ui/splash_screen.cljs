@@ -2,7 +2,15 @@
   (:require
    [rumext.v2 :as mf]))
 
-(def app-info {:author "by Norberto Zurita" :name "Hello World!" :description "Hola mundo! Hablando en Clojure! Este es un pequeño proyecto de presentación y práctica de Clojure con React."})
+(def app-info {:author "by Norberto Zurita"
+               :name "Hello World!"
+               :description "Hola mundo! Hablando en Clojure! Este es un pequeño proyecto de presentación y práctica de Clojure con React."
+               :links [{:label "Github"
+                        :title "Página del proyecto en Github"
+                        :href "https://github.com/nzurita/hello-clojure"}
+                       {:label "Mi CV"
+                        :title "Visita mi currículum"
+                        :href "/data/main-character-cv.pdf"}]})
 
 (mf/defc splash-screen*
   {::mf/props :obj}
@@ -13,5 +21,13 @@
     [:h2.splash-author (:author app-info)]
     [:p.splash-description
      (:description app-info)]
-    [:a.splash-enter {:href "#" :on-click on-close-splash} "Entrar"]]]
-  )
+    [:div.splash-links
+     (for [{:keys [label title href]} (:links app-info)]
+       [:a.splash-link
+        {:key href
+         :href href
+         :title title
+         :target "_blank"
+         :rel "noopener noreferrer"}
+        label])]
+    [:a.splash-enter {:href "#" :on-click on-close-splash} "Entrar"]]])
