@@ -478,7 +478,7 @@ button, .btn , a.btn{
 
 .btn-video-close {
   position: absolute;
-  top: -32px;
+  top: 0;
   right: 0;
   width: 28px;
   height: 28px;
@@ -487,6 +487,14 @@ button, .btn , a.btn{
   color: var(--color-accent);
   border: 1px solid var(--color-accent);
   border-radius: 50%;
+}
+
+.video-overlay .btn-video-close {
+  position: fixed;
+  top: max(8px, env(safe-area-inset-top, 0px));
+  right: max(8px, env(safe-area-inset-right, 0px));
+  z-index: 91;
+  background-color: rgba(0, 0, 0, 0.65);
 }
 
 /* chrome: pestaña, cierre y fondo del overlay */

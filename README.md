@@ -77,3 +77,19 @@ Inside, you move between windows with Ctrl+b and then the number (0, 1, …) or 
 `docker compose down`
 
 # Production environment
+
+```
+cd hello-clojure/frontend
+pnpm install
+pnpm run release
+
+cd hello-clojure
+sudo chown -R user:www-data frontend/resources/public
+sudo chmod -R g+rX frontend/resources/public
+
+# manually check listen
+cd hello-clojure/backend
+clojure -P # descarga dependencias
+clojure -M -m app.core
+```
+
